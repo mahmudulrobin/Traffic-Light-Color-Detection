@@ -1,0 +1,55 @@
+function [] = Yellow(X)
+%YELLOW Summary of this function goes here
+%   Detailed explanation goes here
+subplot(223)
+
+
+[row,col]=size(X);
+SE=[1 1 1;1 1 1;1 1 1];
+found =false;
+X=imclose(X,SE);
+X=imdilate(X,SE);
+%G=imopen(G,SE);
+[centers,radii] = imfindcircles(X,[17 100],'ObjectPolarity','bright','Sensitivity',.96);
+
+%centers
+%radii
+imshow(X)
+plot=subplot(223);
+title(plot,'Yellow');
+h = viscircles(centers,radii);
+c=0;
+[a,b]=size(radii);
+
+for x = 1:a
+    
+    rr=floor(centers(x,1));
+    cc=floor(centers(x,2));
+    radii=floor(radii);
+    
+    for i=cc-radii:cc+radii
+        for j=rr-radii:rr+radii
+            if i>row || i<=0 || j>col || j<=0
+                continue;
+            end
+            if X(i,j)==255
+                c=c+1;
+
+            end
+        end
+    end
+    c;
+    d=floor(3.1416*radii(x)*radii(x));
+
+    if abs(c-d)<d*.4 && found==false
+        disp('Yellow Color Detected')
+        found=true;
+    else
+        %disp('Green Not Detected')
+    end
+end
+
+
+
+end
+
